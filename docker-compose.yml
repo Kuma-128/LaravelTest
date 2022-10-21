@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres #元になるイメージ
+    container_name: database #コンテナ名
+    restart: unless-stopped
+    environment: #環境変数のリスト
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: laravel_docker
+    volumes: #Dockerコンテナが生成、使用するデータを保持するための推奨メカニズム
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:  #コンテナの公開ポート指定.ホスト側ポート:コンテナ側ポート
+      - '5432:5432'
+
+  php-apache:
+    container_name: php-apache
+    build:
+      context: ./php
+    ports:
+        - '8080:80'
+    volumes:
+      - ./src:/var/www/laravel_docker
+      - ./apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+    depends_on:
+      - database

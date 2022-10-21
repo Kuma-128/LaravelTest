@@ -1,0 +1,7 @@
+Dockerを用いたLocal環境Laravelテスト
+
+#コンテナを起動する場合
+bash setup.sh
+
+サイト
+http://localhost:8080/
